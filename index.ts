@@ -17,6 +17,11 @@ app.get("/", (request: Request, response: Response) => {
 
 app.use("/user", userRoutes);
 
-app.listen(port, () => {
-  console.log("fisting on port " + port);
-});
+try {
+  await sequelize.sync({ force: true });
+  app.listen(port, () => {
+    console.log("fisting on port " + port);
+  });
+} catch (error) {
+  process.exit(1);
+}
