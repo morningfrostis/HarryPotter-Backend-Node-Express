@@ -3,9 +3,8 @@ const getUserList = async () => {
   return users;
 };
 
-const getUserbyId = async (id) => {
-  const user = await User.findbyPk(id);
-  return user;
+const getUserByEmail = async ({ email }) => {
+  return User.findOne({ where: { email } });
 };
 
 const createUser = async ({ name }) => {
