@@ -1,31 +1,45 @@
-const getUserList = async () => {
-  const users = await User.findAll();
-  return users;
-};
+const db = require("../models");
+const User = db.user;
+const Data = db.data;
 
-const getUserByEmail = async ({ email }) => {
-  return User.findOne({ where: { email } });
-};
-
-const createUser = async ({ name }) => {
-  const user = await User.create({ name });
+export const getUserById = async (id) => {
+  const user = await User.findByPk(id);
+  delete user.password;
   return user;
 };
 
-const updateUser = async (id, data) => {
-  const user = await User.create(data, {
-    where: {
-      id,
-    },
+export const getUserByEmail = async (email) => {
+  const user = await User.findOne({
+    where: { email: email },
   });
   return user;
 };
 
-const removeUser = async (id) => {
-  await User.destroy({
-    where: {
-      id,
+export const toggleNasaToFavorite = async ({ userId, roverId }) => {
+  let user = await User.findByPk(userId, {
+    attributes: { exclude: ["password", "salt"] },
+    include: {
+      model: db.data,
+      as: "favorites",
     },
   });
-  return true;
+  console.log("PREV", user);
+  let currentFavList = user.favorites.map((item) => item.id) || [];
+
+  const existed = currentFavList.includes(roverId);
+
+  let isAdded = false;
+  if (!existed) {
+    const rover = await Data.findByPk(roverId);
+    if (!rover) {
+      throw new Error("Rover not found");
+    }
+    user.addFavorites(rover);
+    isAdded = true;
+  } else {
+    const newList = currentFavList.filter((item) => item !== roverId);
+    user.setFavorites(newList);
+  }
+
+  return { user, isAdded };
 };
