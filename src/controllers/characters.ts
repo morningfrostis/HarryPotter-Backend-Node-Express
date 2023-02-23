@@ -1,15 +1,15 @@
 import { request, response } from "express";
 
 const db = require("../models");
-const Data = db.data;
+const Characters = db.data;
 
 export const getCharacters = async () => {
-  const result = await Data.findAll(request.body);
+  const result = await Characters.findAll(request.body);
   return result;
 };
 
 export const getCharactersById = async (id) => {
-  const result = await Data.findByPk(id);
+  const result = await Characters.findByPk(id);
   return result;
 };
 
@@ -19,12 +19,17 @@ export const createCharacters = async ({
   img_src,
   earth_date,
 }) => {
-  const result = await Data.create({ idNasa, camera, img_src, earth_date });
+  const result = await Characters.create({
+    idNasa,
+    camera,
+    img_src,
+    earth_date,
+  });
   return result;
 };
 
 export const updateCharacters = async (id, data) => {
-  const result = await Data.update(
+  const result = await Characters.update(
     data,
     {
       where: {
@@ -40,7 +45,7 @@ export const updateCharacters = async (id, data) => {
 };
 
 export const removeCharacters = async (id) => {
-  await Data.destroy({
+  await Characters.destroy({
     where: {
       id,
     },

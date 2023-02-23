@@ -1,6 +1,5 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
 
-const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./src/routes/user");
 const sequelize = require("./src/services/db");
