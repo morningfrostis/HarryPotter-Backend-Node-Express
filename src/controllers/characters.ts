@@ -47,3 +47,4 @@ export const removeCharacters = async (id) => {
   });
   return true;
 };
+

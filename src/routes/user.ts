@@ -1,29 +1,17 @@
 import { Request, Response } from "express";
+import { Router } from 'express';
+const router = Router();
+import { getUserById }  from'../controllers/user'
 
-const router = require("express").Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.json({ info: "User List" });
-});
-
-router.get("/:id", (req: Request, res: Response) => {
-  console.log(req);
-  res.json({ info: "User by Id" });
-});
-
-router.post("/", (req: Request, res: Response) => {
-  console.log(req);
-  res.json({ info: "User Creation" });
-});
-
-router.put("/:id", (req: Request, res: Response) => {
-  console.log(req);
-  res.json({ info: "User Edition/Update" });
-});
-
-router.delete("/:id", (req: Request, res: Response) => {
-  console.log(req);
-  res.json({ info: "User Delete" });
-});
+router.get('/:id', async (request, response) => {
+  try {
+      const { id } = request.params
+      const user = await getUserById(id)
+      response.status(200).json(user)
+  } catch (error) {
+      response.status(500).json(error)
+  }
+})
 
 module.exports = router;
