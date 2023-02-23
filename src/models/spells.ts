@@ -1,7 +1,7 @@
 "use strict";
 import { Model } from "sequelize";
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Spells extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,16 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
-      User.belongsToMany(models.data, {
+      Spells.belongsToMany(models.data, {
         through: "UserData",
-        as: "favorites",
-        foreignKey: "userId",
+        as: "favSpells",
+        foreignKey: "spellsId",
       });
     }
   }
-
-  User.init(
+  Spells.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -26,18 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
       },
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      password: DataTypes.STRING,
-      salt: DataTypes.STRING,
+      spellsId: DataTypes.STRING,
+      name: DataTypes.STRING,
+      description: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "user",
+      modelName: "Spells",
     }
   );
-  return User;
+  return Spells;
 };
