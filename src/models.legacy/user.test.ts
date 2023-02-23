@@ -1,7 +1,7 @@
 "use strict";
-import { Model } from "sequelize";
+import { Model } from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class user extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,16 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
-      User.belongsToMany(models.data, {
+      user.belongsToMany(models.data, {
         through: "UserData",
         as: "favorites",
         foreignKey: "userId",
       });
     }
   }
-
-  User.init(
+  user.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -39,5 +37,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "user",
     }
   );
-  return User;
+  return user;
 };
